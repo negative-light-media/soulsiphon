@@ -1,0 +1,11 @@
+{
+  "variants": {
+      "vertical_direction=down": {
+        "model": "soulsiphon:block/soul_siphon_down"
+      },
+
+      "vertical_direction=up": {
+        "model": "soulsiphon:block/soul_siphon_up"
+      }
+  }
+}

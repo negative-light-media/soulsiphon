@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "soulsiphon:block/sculk_cauldron_top_on",
+    "bottom": "soulsiphon:block/sculk_cauldron_bottom",
+    "side": "soulsiphon:block/sculk_cauldron_side_on"
+  }
+}
