@@ -41,13 +41,17 @@ public class SoulSiphon extends Block implements Fallable {
 
     public static final DirectionProperty TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
 
-    private static final float DAMAGE_PER_FALL_DISTANCE = 1.0F;
+    private static final float DAMAGE_PER_FALL_DISTANCE = 2.0F;
 
     private static final VoxelShape TIP_SHAPE_UP = Block.box(5.00D, 0D, 5D, 11D,11D, 11D);
     private static final VoxelShape TIP_SHAPE_DOWN = Block.box(5D, 5D, 5D, 11D,16D, 11D);
     private static final VoxelShape REQUIRED_SPACE_TO_DRIP_THROUGH_NON_SOLID_BLOCK = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D);
 
     private  static final float DRIP_THRESHOLD = 0.2F;
+
+    public static final float MIN_TRANSFER_THRESH = 0.05859375F;
+    public static final float MAX_TRANSFER_THRESH = 0.17578125F;
+
 
 
 
@@ -63,7 +67,7 @@ public class SoulSiphon extends Block implements Fallable {
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float v) {
         if(state.getValue(TIP_DIRECTION) == Direction.UP)
         {
-            entity.causeFallDamage(v + 2.0F, 2.0F, DamageSource.STALAGMITE);
+            entity.causeFallDamage(v + DAMAGE_PER_FALL_DISTANCE, DAMAGE_PER_FALL_DISTANCE, DamageSource.STALAGMITE);
         } else {
             super.fallOn(level, state, pos, entity, v);
         }
@@ -72,7 +76,7 @@ public class SoulSiphon extends Block implements Fallable {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource source) {
-       if(canDrip(state))
+       if(canDrip(level, pos))
        {
            float f = source.nextFloat();
 
@@ -89,10 +93,17 @@ public class SoulSiphon extends Block implements Fallable {
 
     }
 
+    /**
+     * Check if the Soul Siphon is below CRYING OBSIDIAN and a SOUL Block s.t. it can drip
+     * @param level -> the world
+     * @param pos -> blocks current position
+     * @return IF the siphon can drip
+     */
     private boolean canDrip(Level level, BlockPos pos) {
 
-        BlockPos evalBlockPos = pos.above();
-        BlockState evalBlockState = level.getBlockState(evalBlockPos);
+        BlockPos evalBlockPos = pos.above(); //Block to Check
+        BlockState evalBlockState = level.getBlockState(evalBlockPos); //Block State to check
+
         if(evalBlockState.is(Blocks.CRYING_OBSIDIAN)) {
             evalBlockPos = evalBlockPos.above();
             evalBlockState = level.getBlockState(evalBlockPos);
@@ -105,13 +116,9 @@ public class SoulSiphon extends Block implements Fallable {
         return false;
     }
 
-    private boolean canDrip(BlockState state) {
-        return state.getValue(TIP_DIRECTION) == Direction.DOWN;
-    }
 
     private static void spawnDripParticle(Level level, BlockPos blockPos) {
 
-        double d0 = 0.0625D;
         double d1 = (double)blockPos.getX() + 0.5D;
         double d2 = (double)((float)(blockPos.getY() + 1) - 0.6875F) - 0.0625D - 0.025D;
         double d3 = (double)blockPos.getZ() + 0.5D;
@@ -140,8 +147,6 @@ public class SoulSiphon extends Block implements Fallable {
         return isValidSiphonPlacement(reader, pos, state.getValue(TIP_DIRECTION));
     }
 
-    public static final float MIN_TRANSFER_THRESH = 0.05859375F;
-    public static final float MAX_TRANSFER_THRESH = 0.17578125F;
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource source) {
@@ -173,22 +178,33 @@ public class SoulSiphon extends Block implements Fallable {
 
     }
 
+    /**
+     * Check if a block is a soul vesel and convert it into its base block
+     * @todo Find way to use a file to handle this
+     * @param level -> World
+     * @param pos -> Block position of the siphon
+     */
     private void possesBlock(ServerLevel level, BlockPos pos) {
+        //** Get block below
         BlockPos targetPos = findSoulVessel(level, pos);
-        if(targetPos == null)
+        if(targetPos == null) //Is block empty
         {
             return;
         }
-        BlockState targetState = level.getBlockState(targetPos);
+        BlockState targetState = level.getBlockState(targetPos); //***Get the target state
 
+        //****IS this a possable block
         if(targetState.is(ModTags.Blocks.CAN_POSSES_BLOCK_TAG)) {
+            //***If the block is sand make it soul sand
             if(targetState.is(Blocks.SAND)) {
                 changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
             }
+            //***If the block is RED Stand make it soul soil
             else if (targetState.is(Blocks.RED_SAND)) {
                 changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
 
             }
+            //****IF the block is a sculk cauldron fill it
             else if (targetState.is(ModBlocks.SCULK_CAULDRON.get())) {
                 if(!targetState.getValue(SculkCauldronBlock.FULL)) {
 
@@ -199,6 +215,7 @@ public class SoulSiphon extends Block implements Fallable {
                 }
 
             }
+            //***If the block is a sculk catalyst trigger its spawning
             else if (targetState.is(Blocks.SCULK_CATALYST)) {
                 SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
                 SculkSpreader spreader = catalystBlockEntity.getSculkSpreader();
@@ -209,6 +226,14 @@ public class SoulSiphon extends Block implements Fallable {
 
     }
 
+    /**
+     * Chnage one block to another block
+     * @param level -> the world
+     * @param pos -> world position for event
+     * @param targetPos -> position of block to change
+     * @param targetState -> targets initial state
+     * @param changeState -> targets final state
+     */
     private void changeBlock(ServerLevel level, BlockPos pos, BlockPos targetPos, BlockState targetState, BlockState changeState) {
         level.setBlockAndUpdate(targetPos, changeState);
         Block.pushEntitiesUp(targetState, changeState, level, targetPos);
@@ -216,11 +241,23 @@ public class SoulSiphon extends Block implements Fallable {
         level.levelEvent(1504, pos, 0);
     }
 
+    /**
+     * Set Pursh Reaction to DESTROY
+     * @param p_60584_
+     * @return DESTROY
+     */
     @Override
     public PushReaction getPistonPushReaction(BlockState p_60584_) {
         return PushReaction.DESTROY;
     }
 
+    /**
+     * Check if block placment is valid
+     * @param reader -> reader for the worlds
+     * @param pos -> if the position is valid
+     * @param direction -> placement direction
+     * @return if the placment is valid
+     */
     public static boolean isValidSiphonPlacement(LevelReader reader, BlockPos pos, Direction direction)
     {
         BlockPos blockPos = pos.relative(direction.getOpposite());
@@ -357,13 +394,21 @@ public class SoulSiphon extends Block implements Fallable {
         return super.updateShape(blockState, direction, state, levelAccessor, pos, pos1);
     }
 
+    /**
+     * Check blocks bellow if they are Possesable
+     * @param level -> the world
+     * @param pos -> positon of the siphon
+     * @return Soul Vessel block
+     */
     private static BlockPos findSoulVessel(Level level, BlockPos pos) {
         Predicate<BlockState> predicate = (blockState) -> {
             return blockState.is(ModTags.Blocks.CAN_POSSES_BLOCK_TAG);
         };
+
         BiPredicate<BlockPos, BlockState> biPredicate = (pos1, blockState) -> {
             return canDripThrough(level, pos1, blockState);
         };
+
         return findBlockVertical(level, pos, Direction.DOWN.getAxisDirection(), biPredicate, predicate, 11).orElse((BlockPos)null);
     }
 

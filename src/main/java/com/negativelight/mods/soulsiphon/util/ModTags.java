@@ -18,7 +18,6 @@ public class ModTags {
 
     public static class Items {
         public static final TagKey<Item> CAN_POSSES_TAG = ItemTags.create(new ResourceLocation(soulsiphon.MODID, "possessable"));
-        public static final TagKey<Item> SOUL_VESSELS_TAG = ItemTags.create(new ResourceLocation(soulsiphon.MODID, "soul_vessels"));
 
 
     }
