@@ -8,5 +8,5 @@ If the souls are extracted above a **Sculk Catalyst**, its lifeforce will be con
 If done above the new **Sculk Caudron** block instead, the soul will then be stored for later use in crafting. 
 
 # Credits
-Mod by @Healix2. 
-Coded by @Negative-light. 
+Mod by [Healex2](https://github.com/Healex2). 
+Coded by [Negative-light](https://github.com/Negative-light). 
