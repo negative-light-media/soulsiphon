@@ -4,7 +4,7 @@ plugins {
 
 
 group = 'com.negative-light.mods'
-version = '1.19.2-1.0-SNAPSHOT-0'
+version = '1.19.2-1.0.1'
 
 java {
     archivesBaseName = 'soulsiphon'
