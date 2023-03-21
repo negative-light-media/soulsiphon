@@ -56,7 +56,6 @@ public class soulsiphon {
 
     private  void clientSetup(final FMLClientSetupEvent event)
     {
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.SOUL_SIPHON.get(), RenderType.cutout());
     }
 
     private void setup(final FMLCommonSetupEvent event) {
