@@ -5,6 +5,8 @@
     "minecraft:torch",
     "minecraft:lantern",
     "minecraft:campfire",
-    "minecraft:glass_bottle"
+    "minecraft:glass_bottle",
+    "minecraft:sand",
+    "minecraft:red_sand"
   ]
 }

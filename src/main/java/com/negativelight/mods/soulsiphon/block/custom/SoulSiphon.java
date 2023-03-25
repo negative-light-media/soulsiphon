@@ -200,7 +200,7 @@ public class SoulSiphon extends Block implements Fallable {
             }
             //***If the block is RED Stand make it soul soil
             else if (targetState.is(Blocks.RED_SAND)) {
-                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
+                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SOIL.defaultBlockState());
 
             }
             //****IF the block is a sculk cauldron fill it
