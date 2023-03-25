@@ -6,10 +6,7 @@ import com.negativelight.mods.soulsiphon.item.ModItems;
 import com.negativelight.mods.soulsiphon.soulsiphon;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
@@ -37,7 +34,7 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops().lightLevel(state -> state.getValue(SculkCauldronBlock.FULL) ? 5 : 0)
                     .strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1])
                     .sound(SoundType.SCULK)),
-            CreativeModeTab.TAB_DECORATIONS
+            CreativeModeTabs.FUNCTIONAL_BLOCKS
     );
 
     public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
@@ -47,7 +44,7 @@ public class ModBlocks {
                             .noOcclusion()
                             .randomTicks()
             ),
-            CreativeModeTab.TAB_DECORATIONS
+            CreativeModeTabs.FUNCTIONAL_BLOCKS
     );
 
 
@@ -61,7 +58,11 @@ public class ModBlocks {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+        return ModItems.ITEMS.register(name,
+                () -> new BlockItem(block.get(),
+                                    new Item.Properties()
+                )
+        );
 
     }
     public static void register(IEventBus eventBus) {

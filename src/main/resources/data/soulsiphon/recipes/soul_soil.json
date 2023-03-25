@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "soulsiphon:weeping_urn_full"
+    },
+    {
+      "item": "minecraft:red_sand"
+    }
+  ],
+  "result": {
+    "item": "minecraft:soul_soil"
+  }
+}

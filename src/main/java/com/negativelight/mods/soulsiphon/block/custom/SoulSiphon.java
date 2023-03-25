@@ -1,7 +1,6 @@
 package com.negativelight.mods.soulsiphon.block.custom;
 
 
-import com.mojang.logging.LogUtils;
 import com.negativelight.mods.soulsiphon.block.ModBlocks;
 import com.negativelight.mods.soulsiphon.util.ModTags;
 import net.minecraft.core.BlockPos;
@@ -67,7 +66,7 @@ public class SoulSiphon extends Block implements Fallable {
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float v) {
         if(state.getValue(TIP_DIRECTION) == Direction.UP)
         {
-            entity.causeFallDamage(v + DAMAGE_PER_FALL_DISTANCE, DAMAGE_PER_FALL_DISTANCE, DamageSource.STALAGMITE);
+            entity.causeFallDamage(v + DAMAGE_PER_FALL_DISTANCE, DAMAGE_PER_FALL_DISTANCE, level.damageSources().stalagmite());
         } else {
             super.fallOn(level, state, pos, entity, v);
         }
@@ -201,7 +200,7 @@ public class SoulSiphon extends Block implements Fallable {
             }
             //***If the block is RED Stand make it soul soil
             else if (targetState.is(Blocks.RED_SAND)) {
-                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
+                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SOIL.defaultBlockState());
 
             }
             //****IF the block is a sculk cauldron fill it
@@ -219,7 +218,7 @@ public class SoulSiphon extends Block implements Fallable {
             else if (targetState.is(Blocks.SCULK_CATALYST)) {
                 SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
                 SculkSpreader spreader = catalystBlockEntity.getSculkSpreader();
-                spreader.addCursors(new BlockPos(targetPos.offset(0, 0.5D, 0)), 10);
+                spreader.addCursors(new BlockPos(targetPos.offset(0, 1, 0)), 10);
                 SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
             }
         }
@@ -289,7 +288,7 @@ public class SoulSiphon extends Block implements Fallable {
     @Nullable
     private Direction calculatePlacementDirection(LevelReader levelReader, BlockPos pos, Direction direction) {
         Direction direction1;
-        LogUtils.getLogger().info(direction.toString());
+        //LogUtils.getLogger().info(direction.toString());
         if(isValidSiphonPlacement(levelReader, pos, direction))
         {
             direction1 = direction;
@@ -334,9 +333,6 @@ public class SoulSiphon extends Block implements Fallable {
         }
     }
 
-    public DamageSource getFallDamageSource() {
-        return DamageSource.FALLING_STALACTITE;
-    }
 
     public Predicate<Entity> getHurtsEntitySelector() {
         return EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE);

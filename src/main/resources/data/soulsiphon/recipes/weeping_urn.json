@@ -8,9 +8,14 @@
     "C": {
       "item": "minecraft:crying_obsidian"
     },
-    "S": {
-      "item": "minecraft:red_sand"
-    }
+    "S": [
+      {
+        "item": "minecraft:red_sand"
+      },
+      {
+        "item":"minecraft:sand"
+      }
+    ]
   },
   "result": {
     "item": "soulsiphon:weeping_urn"

@@ -99,6 +99,15 @@ public class SculkCauldronBlock extends Block {
                 changeItem = Items.EXPERIENCE_BOTTLE;
                 swapItem(player, hand, stack, changeItem);
             }
+            else if (stackItem == Items.SAND) {
+                changeItem = Items.SOUL_SAND;
+                swapItem(player, hand, stack, changeItem);
+            }
+            else if (stackItem == Items.RED_SAND) {
+                changeItem = Items.SOUL_SOIL;
+                swapItem(player, hand, stack, changeItem);
+
+            }
 
 
             success = true;
