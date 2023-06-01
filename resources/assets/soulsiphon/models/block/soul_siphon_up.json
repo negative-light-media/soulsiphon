@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/pointed_dripstone",
-  "textures": {
-    "cross": "soulsiphon:block/soul_siphon_up"
-  },
-  "render_type": "cutout"
-}

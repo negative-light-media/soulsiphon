@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "full=false": {"model": "soulsiphon:block/sculk_cauldron_off"},
-    "full=true": {"model": "soulsiphon:block/sculk_cauldron_on"}
-  }
-}

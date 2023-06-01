@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "soulsiphon:block/soul_siphon_down"
-  },
-  "render_type": "cutout"
-}
