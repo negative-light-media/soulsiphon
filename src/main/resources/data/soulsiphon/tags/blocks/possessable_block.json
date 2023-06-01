@@ -3,6 +3,8 @@
   "values": [
     "minecraft:red_sand",
     "minecraft:sand",
+    "minecraft:stone",
+    "minecraft:stone_slab",
     "minecraft:sculk_catalyst",
     "soulsiphon:sculk_cauldron"
 

@@ -2,7 +2,6 @@ package com.negativelight.mods.soulsiphon.item;
 
 import com.negativelight.mods.soulsiphon.item.custom.WeepingUrnItem;
 import com.negativelight.mods.soulsiphon.soulsiphon;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,15 +17,17 @@ public class ModItems {
                             new Item.Properties()
                                     //.tab(CreativeModeTab.TAB_TOOLS)
                                     .stacksTo(64)
+                                    .requiredFeatures()
                     )
             );
     public static final RegistryObject<WeepingUrnItem> WEEPING_URN_FULL =
             ITEMS.register("weeping_urn_full",
                     ()-> new WeepingUrnItem(
                             new Item.Properties()
-                                     //.tab(CreativeModeTab.TAB_TOOLS)
+                                    //.tab(CreativeModeTab.TAB_TOOLS)
                                     .stacksTo(16)
                                     .craftRemainder(WEEPING_URN.get())
+                                    .requiredFeatures()
                     )
             );
 
@@ -38,3 +39,4 @@ public class ModItems {
     }
 
 }
+
