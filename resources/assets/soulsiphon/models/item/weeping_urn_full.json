@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "soulsiphon:item/weeping_urn_full"
+  }
+}

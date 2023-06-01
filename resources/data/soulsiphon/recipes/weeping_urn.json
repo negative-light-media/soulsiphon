@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CSC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "S": [
+      {
+        "item": "minecraft:red_sand"
+      },
+      {
+        "item":"minecraft:sand"
+      }
+    ]
+  },
+  "result": {
+    "item": "soulsiphon:weeping_urn"
+  }
+}
