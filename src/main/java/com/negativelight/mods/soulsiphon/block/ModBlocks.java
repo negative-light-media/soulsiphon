@@ -1,5 +1,5 @@
 package com.negativelight.mods.soulsiphon.block;
-
+import com.negativelight.mods.soulsiphon.block.CreativeModeTabs;
 import com.negativelight.mods.soulsiphon.block.custom.SculkCauldronBlock;
 import com.negativelight.mods.soulsiphon.block.custom.SoulSiphon;
 import com.negativelight.mods.soulsiphon.item.ModItems;
@@ -21,7 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 
 import java.util.function.Supplier;
-
+import com.negativelight.mods.soulsiphon.soulsiphon;
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, soulsiphon.MODID);
     //*****************BLOCK CONSTANTS
@@ -34,17 +34,18 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops().lightLevel(state -> state.getValue(SculkCauldronBlock.FULL) ? 5 : 0)
                     .strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1])
                     .sound(SoundType.SCULK)),
-            CreativeModeTabs.FUNCTIONAL_BLOCKS
+            CreativeModeTabs.SOULSIPHON_TAB
     );
 
     public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
-      "soul_siphon",
+            "soul_siphon",
             () -> new SoulSiphon(
                     BlockBehaviour.Properties.of(Material.SCULK, MaterialColor.TERRACOTTA_CYAN)
                             .noOcclusion()
                             .randomTicks()
+                            .requiredFeatures()
             ),
-            CreativeModeTabs.FUNCTIONAL_BLOCKS
+            CreativeModeTabs.SOULSIPHON_TAB
     );
 
 
@@ -60,7 +61,8 @@ public class ModBlocks {
                                                                             CreativeModeTab tab) {
         return ModItems.ITEMS.register(name,
                 () -> new BlockItem(block.get(),
-                                    new Item.Properties()
+                        new Item.Properties()
+                                .requiredFeatures()
                 )
         );
 
