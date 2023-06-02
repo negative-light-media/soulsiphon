@@ -1,5 +1,5 @@
 package com.negativelight.mods.soulsiphon.block;
-import com.negativelight.mods.soulsiphon.block.CreativeModeTabs;
+//import com.negativelight.mods.soulsiphon.block.CreativeModeTabs;
 import com.negativelight.mods.soulsiphon.block.custom.SculkCauldronBlock;
 import com.negativelight.mods.soulsiphon.block.custom.SoulSiphon;
 import com.negativelight.mods.soulsiphon.item.ModItems;
@@ -7,6 +7,7 @@ import com.negativelight.mods.soulsiphon.soulsiphon;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
@@ -18,8 +19,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-
+import net.minecraft.world.item.CreativeModeTab;
 import java.util.function.Supplier;
 import com.negativelight.mods.soulsiphon.soulsiphon;
 public class ModBlocks {
@@ -34,7 +34,7 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops().lightLevel(state -> state.getValue(SculkCauldronBlock.FULL) ? 5 : 0)
                     .strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1])
                     .sound(SoundType.SCULK)),
-            CreativeModeTabs.SOULSIPHON_TAB
+            CreativeModeTabs.FUNCTIONAL_BLOCKS
     );
 
     public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
@@ -45,7 +45,7 @@ public class ModBlocks {
                             .randomTicks()
                             .requiredFeatures()
             ),
-            CreativeModeTabs.SOULSIPHON_TAB
+            CreativeModeTabs.FUNCTIONAL_BLOCKS
     );
 
 
