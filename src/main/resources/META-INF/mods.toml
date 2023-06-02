@@ -25,11 +25,11 @@ displayName = "soulsiphon" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="http://example.com/" #optional
+displayURL="https://github.com/Negative-light/soulsiphon" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="soulsiphon.png" #optional
 # A text field displayed in the mod UI
-#credits="Thanks for this example mod goes to Java" #optional
+credits="Special Thanks to all of our contributors." #optional
 # A text field displayed in the mod UI
 authors = "Negative_light, Healex2" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -38,11 +38,14 @@ authors = "Negative_light, Healex2" #optional
 # IGNORE_ALL_VERSION means that your mod will not cause a red X if it's present on the client or the server. This is a special case and should only be used if your mod has no server component.
 # NONE means that no display test is set on your mod. You need to do this yourself, see IExtensionPoint.DisplayTest for more information. You can define any scheme you wish with this value.
 # IMPORTANT NOTE: this is NOT an instruction as to which environments (CLIENT or DEDICATED SERVER) your mod loads on. Your mod should load (and maybe do nothing!) whereever it finds itself.
-#displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
+displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
 description = '''
-Mod that allows you to extract souls from soul siphon
+Mod that allows you to extract souls from soul siphon.
+Created By: Healex2
+Lead Developer: Negative_light
+Contributors: CrazySmile11012
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.soulsiphon]] #optional
