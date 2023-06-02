@@ -1,9 +1,11 @@
 package com.negativelight.mods.soulsiphon;
 
 import com.mojang.logging.LogUtils;
-import com.negativelight.mods.soulsiphon.block.CreativeModeTabs;
+//import com.negativelight.mods.soulsiphon.block.CreativeModeTabs;
 import com.negativelight.mods.soulsiphon.block.ModBlocks;
 import com.negativelight.mods.soulsiphon.item.ModItems;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -53,11 +55,17 @@ public class soulsiphon {
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
     private void addCreative(CreativeModeTabEvent.BuildContents event){
-        if (event.getTab() == CreativeModeTabs.SOULSIPHON_TAB){
-            event.accept(ModItems.WEEPING_URN);
-            event.accept(ModItems.WEEPING_URN_FULL);
+
+
+        if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(ModBlocks.SCULK_CAULDRON);
             event.accept(ModBlocks.SOUL_SIPHON);
+        }
+
+        if (event.getTab() == CreativeModeTabs.INGREDIENTS)
+        {
+            event.accept(ModItems.WEEPING_URN);
+            event.accept(ModItems.WEEPING_URN_FULL);
         }
     }
     public void sendLogMsg(String msg)
