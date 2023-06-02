@@ -1,6 +1,11 @@
 # Contributing
 
-Thank you for your interest in contributing to SoulSiphon, a vanilla-like mod for Minecraft Java versions 1.19.0 - 1.20.0. 
+Thank you for your interest in contributing to SoulSiphon, a vanilla-like mod for Minecraft Java versions 1.19.0 - 1.20.0.
+This means that some chagnes will not be accepted as they are outside the scope the mod. These include
+- Chagnes to Terain Generation
+  - New Structures
+  - New Generated Blocks
+- New Createive Mode Tabs
 
 ## Branches
 1. `master` - The master branch is for the latest version of Minecraft and latest version of the mod.
@@ -27,6 +32,6 @@ We suggest using IntelliJ IDE for development.
 ## Code of Conduct
 Contributors are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). Please ensure you read and understand it before contributing.
 
-%%
+## Attribution
+
 This file was made with help from Chat GPT 4.
-%%
