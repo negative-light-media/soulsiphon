@@ -6,6 +6,7 @@ import com.negativelight.mods.soulsiphon.item.ModItems;
 import com.negativelight.mods.soulsiphon.soulsiphon;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -29,8 +30,7 @@ public class ModBlocks {
                     .of(Material.SCULK)
                     .requiresCorrectToolForDrops().lightLevel(state -> state.getValue(SculkCauldronBlock.FULL) ? 5 : 0)
                     .strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1])
-                    .sound(SoundType.SCULK)),
-            CreativeModeTabs.SOULSIPHON_TAB
+                    .sound(SoundType.SCULK)), CreativeModeTabs.FUNCTIONAL_BLOCKS
     );
 
     public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
@@ -40,8 +40,8 @@ public class ModBlocks {
                             .noOcclusion()
                             .randomTicks()
                             .requiredFeatures()
-            ),
-            CreativeModeTabs.SOULSIPHON_TAB
+            ), CreativeModeTabs.FUNCTIONAL_BLOCKS
+
     );
 
 
