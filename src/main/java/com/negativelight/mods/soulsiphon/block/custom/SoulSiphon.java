@@ -214,6 +214,16 @@ public class SoulSiphon extends Block implements Fallable {
                 }
 
             }
+            else if (targetState.is(ModBlocks.SCULK_FORGE.get())) {
+                if(!targetState.getValue(SculkForge.FULL)) {
+
+                    targetState.setValue(SculkForge.FULL, Boolean.valueOf(true));
+
+                    level.setBlock(targetPos, targetState.setValue(SculkForge.FULL, true), 3);
+
+                }
+
+            }
             //***If the block is a sculk catalyst trigger its spawning
             else if (targetState.is(Blocks.SCULK_CATALYST)) {
                 SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);

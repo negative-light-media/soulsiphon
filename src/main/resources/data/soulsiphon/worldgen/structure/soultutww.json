@@ -10,16 +10,5 @@
   },
   "use_expansion_hack": false,
   "spawn_overrides": {
-    "creature": {
-      "bounding_box": "piece",
-      "spawns": [
-        {
-          "type": "minecraft:piglin",
-          "weight": 1,
-          "minCount": 2,
-          "maxCount": 6
-        }
-      ]
-    }
   }
 }

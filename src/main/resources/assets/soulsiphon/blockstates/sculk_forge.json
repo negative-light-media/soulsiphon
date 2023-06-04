@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "fuelfull=false": { "model": "soulsiphon:block/sculk_forge_off"},
+    "fuelfull=true": { "model": "soulsiphon:block/sculk_forge_on"}
+  }
+}

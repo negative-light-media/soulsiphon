@@ -1,9 +1,9 @@
 {
   "block.soulsiphon.sculk_cauldron": "Sculk Cauldron",
   "block.soulsiphon.soul_siphon": "Soul Siphon",
-
   "item.soulsiphon.weeping_urn": "Weeping Urn",
   "item.soulsiphon.weeping_urn_full": "Full Weeping Urn",
-  "creativemodetab.soulsiphon_tab": "soulsiphon tab"
-
+  "creativemodetab.soulsiphon_tab": "Soulsiphon+ Tab",
+  "block.soulsiphon.block_o_souls": "Block 'O' Souls",
+  "block.soulsiphon.sculk_forge": "Sculk Forge"
 }

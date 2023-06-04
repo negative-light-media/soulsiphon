@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lighton=false": { "model": "soulsiphon:block/soul_light_off"},
+    "lighton=true": { "model": "soulsiphon:block/soul_light"}
+  }
+}

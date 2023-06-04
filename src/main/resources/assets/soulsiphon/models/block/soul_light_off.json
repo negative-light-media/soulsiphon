@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "soulsiphon:block/soul_light_off",
+    "bottom": "soulsiphon:block/soul_light_off",
+    "side": "soulsiphon:block/soul_light_off"
+  }
+}
