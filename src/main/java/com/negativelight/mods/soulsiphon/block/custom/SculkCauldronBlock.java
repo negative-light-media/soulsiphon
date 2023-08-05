@@ -154,17 +154,5 @@ public class SculkCauldronBlock extends Block {
         stateBuilder.add(FULL);
     }
 
-    /**
-     * Overite of Push Reaction set the Push reaction to BLOCK
-     * @param p_60584_
-     * @return BLOCK
-     */
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-
-        return PushReaction.BLOCK;
-
-
-    }
 
 }

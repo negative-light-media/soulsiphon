@@ -11,8 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,37 +23,33 @@ public class ModBlocks {
     //*****************BLOCK CONSTANTS
     public static final float[] SCULK_CAULDRON_STRENGTH = {50.0F, 1200.0F};
     //*******************BLocks
-    public static  final RegistryObject<Block> SCULK_CAULDRON = registerBlock(
+
+    public static final RegistryObject<Block> SCULK_CAULDRON = registerBlock(
             "sculk_cauldron",
-            () -> new SculkCauldronBlock(BlockBehaviour.Properties
-                    .of(Material.SCULK)
-                    .requiresCorrectToolForDrops().lightLevel(state -> state.getValue(SculkCauldronBlock.FULL) ? 5 : 0)
-                    .strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1])
-                    .sound(SoundType.SCULK)), CreativeModeTabs.FUNCTIONAL_BLOCKS
+            () -> new SculkCauldronBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(SCULK_CAULDRON_STRENGTH[0], SCULK_CAULDRON_STRENGTH[1]).sound(SoundType.SCULK).pushReaction(PushReaction.BLOCK))
     );
 
     public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
             "soul_siphon",
             () -> new SoulSiphon(
-                    BlockBehaviour.Properties.of(Material.SCULK, MaterialColor.TERRACOTTA_CYAN)
+                    BlockBehaviour.Properties.of()
                             .noOcclusion()
                             .randomTicks()
                             .requiredFeatures()
-            ), CreativeModeTabs.FUNCTIONAL_BLOCKS
+                            .pushReaction(PushReaction.DESTROY)
+            ));
 
-    );
 
 
     //*******************HELPER FUNCTIONS
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab);
+        registerBlockItem(name, toReturn);
         return toReturn;
 
     }
 
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
-                                                                            CreativeModeTab tab) {
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
         return ModItems.ITEMS.register(name,
                 () -> new BlockItem(block.get(),
                         new Item.Properties()

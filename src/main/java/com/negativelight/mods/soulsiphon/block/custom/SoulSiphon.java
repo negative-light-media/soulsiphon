@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,12 +20,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SculkCatalystBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -149,20 +150,16 @@ public class SoulSiphon extends Block implements Fallable {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource source) {
        float x = source.nextFloat();
-        if(x <= MAX_TRANSFER_THRESH || x <= MIN_TRANSFER_THRESH)
+        if(x <= MAX_TRANSFER_THRESH || x >= MIN_TRANSFER_THRESH)
         {
 
             if(canDrip(level, pos)) {
-
-
                     BlockPos targetPos = pos.above(2);
-
                     BlockState targetState = level.getBlockState(targetPos);
 
                 if (Blocks.SOUL_SAND.equals(targetState.getBlock())) {
                     changeBlock(level, pos, targetPos, targetState, Blocks.SAND.defaultBlockState());
                     possesBlock(level, pos);
-
                 }
                 else if (Blocks.SOUL_SOIL.equals(targetState.getBlock())) {
                     changeBlock(level, pos, targetPos, targetState, Blocks.RED_SAND.defaultBlockState());
@@ -206,7 +203,7 @@ public class SoulSiphon extends Block implements Fallable {
             else if (targetState.is(ModBlocks.SCULK_CAULDRON.get())) {
                 if(!targetState.getValue(SculkCauldronBlock.FULL)) {
 
-                    targetState.setValue(SculkCauldronBlock.FULL, Boolean.valueOf(true));
+                    targetState.setValue(SculkCauldronBlock.FULL, Boolean.TRUE);
 
                     level.setBlock(targetPos, targetState.setValue(SculkCauldronBlock.FULL, true), 3);
 
@@ -216,9 +213,10 @@ public class SoulSiphon extends Block implements Fallable {
             //***If the block is a sculk catalyst trigger its spawning
             else if (targetState.is(Blocks.SCULK_CATALYST)) {
                 SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
-                SculkSpreader spreader = catalystBlockEntity.getSculkSpreader();
+                SculkSpreader spreader = catalystBlockEntity.getListener().getSculkSpreader();
                 spreader.addCursors(new BlockPos(targetPos.offset(0, 1, 0)), 10);
-                SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
+                //SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
+                level.setBlock(targetPos, targetState.setValue(SculkCatalystBlock.PULSE, Boolean.valueOf(true)), 3);
             }
         }
 
@@ -239,15 +237,7 @@ public class SoulSiphon extends Block implements Fallable {
         level.levelEvent(1504, pos, 0);
     }
 
-    /**
-     * Set Pursh Reaction to DESTROY
-     * @param p_60584_
-     * @return DESTROY
-     */
-    @Override
-    public PushReaction getPistonPushReaction(BlockState p_60584_) {
-        return PushReaction.DESTROY;
-    }
+
 
     /**
      * Check if block placment is valid

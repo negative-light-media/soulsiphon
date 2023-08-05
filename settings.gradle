@@ -3,6 +3,11 @@ pluginManagement {
         gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net/' }
     }
+
+    // In settings.gradle
+    plugins {
+        id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+    }
 }
 
 rootProject.name = 'soulsiphon'
