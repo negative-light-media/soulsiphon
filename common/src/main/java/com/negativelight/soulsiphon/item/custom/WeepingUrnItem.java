@@ -1,4 +1,4 @@
-package com.negativelight.mods.soulsiphon.item.custom;
+package com.negativelight.soulsiphon.item.custom;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
