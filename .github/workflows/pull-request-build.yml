@@ -1,0 +1,27 @@
+# Ensures that the code builds on a pull request
+# Special thanks to @mysticdrew on github and the multiloader discord
+
+name: Pull Request Build
+
+on:
+  pull_request:
+    branches:
+      - "master"
+      - "release/*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Gradle Build
+        run: /bin/sh ./gradlew build
