@@ -1,0 +1,126 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-1.[0-9]+.[0-9]+'
+
+jobs:
+  create_build_files:
+    name: Create Build Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Gradle Build
+        run: /bin/sh ./gradlew build
+
+      - name: Place Changlog in build directory
+        run: |
+          touch fabric/build/changelog.md
+          touch forge/build/changelog.md
+          echo ${{ steps.changelog.outputs.changelog }} > fabric/build/changelog.md
+          echo ${{ steps.changelog.outputs.changelog }} > forge/build/changelog.md
+
+      ############### UPLOAD ARTIFACTS
+      - name: Upload Build Directors
+        uses: actions/upload-artifact@v3.1.3
+        with:
+            name: build-files
+            path: |
+              f*/build/
+
+  # Create Curseforge Release
+  release_curseforge:
+    name: Release - Curseforge
+    runs-on: ubuntu-latest
+    needs: create_build_files
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Pull Build Artifacts
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: build-files
+
+      - name: Curseforge Publish
+        run: /bin/sh ./gradlew publishCurseForge -Pcurseforge_api_key=${{ secrets.CURSEFORGE_KEY }}
+
+  # Create Modrinth Release
+  release_modrinth:
+    name: Release - Modrinth
+    runs-on: ubuntu-latest
+    needs: create_build_files
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Generate Changlog
+        id: changlog
+        uses: loopwerk/tag-changelog@v1
+        with:
+          token: ${{ github.token }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Pull Build Artifacts
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: build-files
+
+      - name: Modrinth Publish
+        run: /bin/sh ./gradlew modrinth -Pmodrinth_api_key=${{ secrets.MODRINTH_KEY }}
+
+  # Create Github Release
+  release_github:
+    name: Release - Github
+    runs-on: ubuntu-latest
+    needs:
+      - release_modrinth
+      - release_curseforge
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.1.1
+
+      - name: Pull Build Artifacts
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: build-files
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.13.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          tag: ${{ github.ref }}
+          name: Release ${{github.ref}}
+          bodyFile: fabric/build/changelog.md
+          artifacts: "fabric/build/libs/*.jar,forge/build/libs/*.jar"
