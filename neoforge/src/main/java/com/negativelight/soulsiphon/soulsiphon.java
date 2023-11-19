@@ -3,29 +3,34 @@ package com.negativelight.soulsiphon;
 import com.negativelight.soulsiphon.block.ModBlocks;
 import com.negativelight.soulsiphon.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 
 
 @Mod(Constants.MOD_ID)
 public class soulsiphon {
     
-    public soulsiphon() {
+    public soulsiphon(IEventBus eventBus) {
     
-        // This method is invoked by the Forge mod loader when it is ready
+        // This method is invoked by the NeoForge mod loader when it is ready
         // to load your mod. You can access Forge and Common code in this
         // project.
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         // Use Forge to bootstrap the Common mod.
-        Constants.LOG.info("Hello Forge world!");
+        Constants.LOG.info("Hello NeoForge world!");
         CommonClass.init();
 
         eventBus.addListener(this::addCreative);
 
     }
+
+    @SubscribeEvent
     public void addCreative(BuildCreativeModeTabContentsEvent event) {
         //Constants.LOG.info("Adding to Creative Mode Tab " + event.getTabKey());
 
