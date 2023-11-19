@@ -146,8 +146,8 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addModLoader("NeoForge")
     mainFile.addJavaVersion("Java 17")
     mainFile.addGameVersion("${project.minecraft_version}")
-    mainFile.changelogType = "html"
-    mainFile.changelog = file("$project.buildDir/doc/changelog.html").exists() ? file("$project.buildDir/doc/changelog.html").text : null
+    mainFile.changelogType = "markdown"
+    mainFile.changelog = file("$project.buildDir/doc/changelog.md").exists() ? file("$project.buildDir/doc/changelog.md").text : 'Check github for full changelog'
 }
 
 tasks.modrinth.dependsOn(tasks.build)
@@ -160,8 +160,8 @@ modrinth {
     versionType = release_type
     uploadFile = jar
     gameVersions = ["${project.minecraft_version}"]
-    loaders = ["forge", "neoforge"]
-    changelog = file("$project.buildDir/doc/changelog.html").exists() ? file("$project.buildDir/doc/changelog.html").text : null
+    loaders = ["forge"]
+    changelog = file("$project.buildDir/doc/changelog.md").exists() ? file("$project.buildDir/doc/changelog.md").text : 'Check github for full changelog'
 }
 
 // Ensure build is done prior to cursegradle tasks
