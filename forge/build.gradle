@@ -1,8 +1,8 @@
 plugins {
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle'
-    id 'org.spongepowered.mixin'
+    id 'net.minecraftforge.gradle'  version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'net.darkhax.curseforgegradle' version '1.+'
     id 'com.modrinth.minotaur' version '2.+'
 
@@ -147,7 +147,7 @@ task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge)
     mainFile.addJavaVersion("Java 17")
     mainFile.addGameVersion("${project.minecraft_version}")
     mainFile.changelogType = "markdown"
-    mainFile.changelog = file("$project.buildDir/changelog.md").exists() ? file("$project.buildDir/changelog.md").text : null
+    mainFile.changelog = file("$project.buildDir/doc/changelog.md").exists() ? file("$project.buildDir/doc/changelog.md").text : 'Check github for full changelog'
 }
 
 tasks.modrinth.dependsOn(tasks.build)
@@ -160,8 +160,8 @@ modrinth {
     versionType = release_type
     uploadFile = jar
     gameVersions = ["${project.minecraft_version}"]
-    loaders = ["forge", "neoforge"]
-    changelog = file("$project.buildDir/changelog.html").exists() ? file("$project.buildDir/changelog.html").text : null
+    loaders = ["forge"]
+    changelog = file("$project.buildDir/doc/changelog.md").exists() ? file("$project.buildDir/doc/changelog.md").text : 'Check github for full changelog'
 }
 
 // Ensure build is done prior to cursegradle tasks
