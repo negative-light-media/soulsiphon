@@ -9,7 +9,11 @@ If done above the new **Sculk Caudron** block instead, the soul will then be sto
 
 # Supported Minecraft Versions
 
-The current Supported Minecraft versions are 1.20.x.
+Current Supported Minecraft Versions
+| Version | Support Level |
+| ---: | :--- |
+| 1.20.x | Bug Fixes |
+| 1.21 | Full Support |
 
 # Credits
 - Mod by [Healex2](https://github.com/Healex2). 
