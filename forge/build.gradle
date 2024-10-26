@@ -20,7 +20,7 @@ mixin {
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
-
+    copyIdeResources = true
     reobf = false
 
     def at = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -74,8 +74,6 @@ dependencies {
     // Forge's hack fix
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
-
-jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
