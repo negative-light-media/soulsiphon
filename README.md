@@ -7,6 +7,14 @@ While some may wish to simply free the souls, others will harness them for their
 If the souls are extracted above a **Sculk Catalyst**, its lifeforce will be converted into more Sculk. 
 If done above the new **Sculk Caudron** block instead, the soul will then be stored for later use in crafting. 
 
+# Supported Minecraft Versions
+
+Current Supported Minecraft Versions
+| Version | Support Level |
+| ---: | :--- |
+| 1.20.x | Bug Fixes |
+| 1.21 | Full Support |
+
 # Credits
 - Mod by [Healex2](https://github.com/Healex2). 
 - Lead Developer: [Negative-light](https://github.com/Negative-light). 
