@@ -14,12 +14,12 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTags {
     public static class Blocks{
-        public static final TagKey<Block> SOUL_BLOCK_TAG = TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, "soul_block"));
-        public static final TagKey<Block> CAN_POSSES_BLOCK_TAG = TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, "possessable_block"));
+        public static final TagKey<Block> SOUL_BLOCK_TAG = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "blocks/soul_block"));
+        public static final TagKey<Block> CAN_POSSES_BLOCK_TAG = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "blocks/possessable_block"));
     }
 
     public static class Items {
-        public static final TagKey<Item> CAN_POSSES_TAG = TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, "possessable"));
-
+        public static final TagKey<Item> CAN_POSSES_TAG = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "possessable"));
     }
+
 }

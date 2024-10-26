@@ -14,9 +14,4 @@ public class WeepingUrnItem extends Item {
         super(properties);
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        return super.use(level, player, hand);
-    }
-
 }

@@ -2,9 +2,6 @@ package com.negativelight.soulsiphon.block.custom;
 
 
 import com.negativelight.soulsiphon.block.ModBlocks;
-import com.negativelight.soulsiphon.util.ModTags;
-import com.negativelight.soulsiphon.Constants;
-import com.negativelight.soulsiphon.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -14,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,7 +18,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SculkCatalystBlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,7 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -52,9 +46,6 @@ public class SoulSiphon extends Block implements Fallable {
 
     public static final float MIN_TRANSFER_THRESH = 0.05859375F;
     public static final float MAX_TRANSFER_THRESH = 0.17578125F;
-
-
-
 
 
     public SoulSiphon(Properties properties) {
@@ -108,12 +99,12 @@ public class SoulSiphon extends Block implements Fallable {
         if(evalBlockState.is(Blocks.CRYING_OBSIDIAN)) {
             evalBlockPos = evalBlockPos.above();
             evalBlockState = level.getBlockState(evalBlockPos);
-            if (evalBlockState.is(ModTags.Blocks.SOUL_BLOCK_TAG)) {
+            if (evalBlockState.is(Blocks.SOUL_SAND) || evalBlockState.is(Blocks.SOUL_SOIL)) {
                 return  true;
             }
 
-        }
 
+        }
         return false;
     }
 
@@ -190,37 +181,35 @@ public class SoulSiphon extends Block implements Fallable {
         }
         BlockState targetState = level.getBlockState(targetPos); //***Get the target state
 
-        //****IS this a possable block
-        if(targetState.is(ModTags.Blocks.CAN_POSSES_BLOCK_TAG)) {
-            //***If the block is sand make it soul sand
-            if(targetState.is(Blocks.SAND)) {
-                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
-            }
-            //***If the block is RED Stand make it soul soil
-            else if (targetState.is(Blocks.RED_SAND)) {
-                changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SOIL.defaultBlockState());
-
-            }
-            //****IF the block is a sculk cauldron fill it
-            else if (targetState.is(ModBlocks.SCULK_CAULDRON.get())) {
-                if(!targetState.getValue(SculkCauldronBlock.FULL)) {
-
-                    targetState.setValue(SculkCauldronBlock.FULL, Boolean.TRUE);
-
-                    level.setBlock(targetPos, targetState.setValue(SculkCauldronBlock.FULL, true), 3);
-
-                }
-
-            }
-            //***If the block is a sculk catalyst trigger its spawning
-            else if (targetState.is(Blocks.SCULK_CATALYST)) {
-                SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
-                SculkSpreader spreader = catalystBlockEntity.getListener().getSculkSpreader();
-                spreader.addCursors(new BlockPos(targetPos.offset(0, 1, 0)), 10);
-                //SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
-                level.setBlock(targetPos, targetState.setValue(SculkCatalystBlock.PULSE, Boolean.valueOf(true)), 3);
-            }
+        //***If the block is sand make it soul sand
+        if(targetState.is(Blocks.SAND)) {
+            changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SAND.defaultBlockState());
         }
+        //***If the block is RED Stand make it soul soil
+        else if (targetState.is(Blocks.RED_SAND)) {
+            changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SOIL.defaultBlockState());
+
+        }
+        //****IF the block is a sculk cauldron fill it
+        else if (targetState.is(ModBlocks.SCULK_CAULDRON.get())) {
+            if(!targetState.getValue(SculkCauldronBlock.FULL)) {
+
+                targetState.setValue(SculkCauldronBlock.FULL, Boolean.TRUE);
+
+                level.setBlock(targetPos, targetState.setValue(SculkCauldronBlock.FULL, true), 3);
+
+            }
+
+        }
+        //***If the block is a sculk catalyst trigger its spawning
+        else if (targetState.is(Blocks.SCULK_CATALYST)) {
+            SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
+            SculkSpreader spreader = catalystBlockEntity.getListener().getSculkSpreader();
+            spreader.addCursors(new BlockPos(targetPos.offset(0, 1, 0)), 10);
+            //SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
+            level.setBlock(targetPos, targetState.setValue(SculkCatalystBlock.PULSE, Boolean.valueOf(true)), 3);
+        }
+
 
     }
 
@@ -255,7 +244,7 @@ public class SoulSiphon extends Block implements Fallable {
         return blockState.isFaceSturdy(reader, blockPos, direction);
     }
 
-    @Nullable
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
         LevelAccessor levelAccessor = placeContext.getLevel();
@@ -276,7 +265,7 @@ public class SoulSiphon extends Block implements Fallable {
 
     }
 
-    @Nullable
+
     private Direction calculatePlacementDirection(LevelReader levelReader, BlockPos pos, Direction direction) {
         Direction direction1;
         //LogUtils.getLogger().info(direction.toString());
@@ -342,8 +331,6 @@ public class SoulSiphon extends Block implements Fallable {
 
         blockpos$mutableblockpos.move(Direction.DOWN);
 
-
-
     }
 
     @Override
@@ -388,15 +375,11 @@ public class SoulSiphon extends Block implements Fallable {
      * @return Soul Vessel block
      */
     private static BlockPos findSoulVessel(Level level, BlockPos pos) {
-        Predicate<BlockState> predicate = (blockState) -> {
-            return blockState.is(ModTags.Blocks.CAN_POSSES_BLOCK_TAG);
-        };
+        Predicate<BlockState> predicate = (blockState) -> blockState.is(ModBlocks.SCULK_CAULDRON.get());
 
-        BiPredicate<BlockPos, BlockState> biPredicate = (pos1, blockState) -> {
-            return canDripThrough(level, pos1, blockState);
-        };
+        BiPredicate<BlockPos, BlockState> biPredicate = (pos1, blockState) -> canDripThrough(level, pos1, blockState);
 
-        return findBlockVertical(level, pos, Direction.DOWN.getAxisDirection(), biPredicate, predicate, 11).orElse((BlockPos)null);
+        return findBlockVertical(level, pos, Direction.DOWN.getAxisDirection(), biPredicate, predicate, 11).orElse(null);
     }
 
     private static boolean canDripThrough(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {

@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -55,11 +56,14 @@ public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory
         @SuppressWarnings("unchecked")
         public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
             Constants.LOG.info("Registering " + name);
+            final var rl = ResourceLocation.fromNamespaceAndPath(modId, name);
             final var obj = registry.<I>register(name, supplier);
+
             final var ro = new RegistryObject<I>() {
+
                 @Override
                 public ResourceKey<I> getResourceKey() {
-                    return obj.getKey();
+                    return (ResourceKey<I>) obj.getKey();
                 }
 
                 @Override
@@ -69,13 +73,12 @@ public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory
 
                 @Override
                 public I get() {
-                    Constants.LOG.info("Type of obj is " + obj.getClass().getTypeName());
                     return obj.get();
                 }
 
                 @Override
                 public Holder<I> asHolder() {
-                    return obj.getHolder().orElseThrow();
+                    return (Holder<I>) obj.asOptional().orElseThrow();
                 }
             };
             entries.add((RegistryObject<T>) ro);

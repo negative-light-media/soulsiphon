@@ -1,17 +1,20 @@
 package com.negativelight.soulsiphon.block.custom;
 
+import com.negativelight.soulsiphon.Constants;
 import com.negativelight.soulsiphon.item.ModItems;
 import com.negativelight.soulsiphon.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -23,7 +26,7 @@ public class SculkCauldronBlock extends Block {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
 
     /**
-     * Constructior
+     * Constructor
      * @param properties Block properties
      */
     public SculkCauldronBlock(Properties properties) {
@@ -32,14 +35,26 @@ public class SculkCauldronBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(FULL, Boolean.FALSE));
     }
 
+    private static boolean isPossesable(ItemStack itemStack) {
+        return itemStack.is(ModItems.WEEPING_URN.get()) ||
+                itemStack.is(Items.TORCH) ||
+                itemStack.is(Items.CAMPFIRE) ||
+                itemStack.is(Items.LANTERN) ||
+                itemStack.is(Items.GLASS_BOTTLE) ||
+                itemStack.is(Items.SAND) ||
+                itemStack.is(Items.RED_SAND)
+                ;
+    }
+
     /**
      *  Handle Interactions with user
-     *  - Converts Possiable items into their possed form
+     *  - Converts Possible items into their possed form
      *  Weeping Urn -> Full Weeping Urn
      *  Torch -> Soul Torch
      *  Campfire -> Soul Campfire
      *  Lantern -> Soul Lantern
      *  Glass Bottle -> Enchanted Bottle
+     * @param itemStack Inherited
      * @param state Inherited
      * @param level Inherited
      * @param pos Inherited
@@ -49,81 +64,51 @@ public class SculkCauldronBlock extends Block {
      * @return CONSUME if interaction was successful
      */
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        //**** Variables
-        ItemStack mainHandItem = player.getMainHandItem(); // Players main hand item
-        ItemStack offhandItem = player.getOffhandItem(); //Players offhand item
-        ItemStack  stack; //Item stack of interacted item
-        Item stackItem; //Single Items from stack
-
-        boolean success = false; //Pass/Fail bool
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 
         //IF the Cauldron is FULL and one of the items has a CAN_POSSES_TAG
-        if(state.getValue(FULL) &&  (mainHandItem.is(ModTags.Items.CAN_POSSES_TAG) || offhandItem.is(ModTags.Items.CAN_POSSES_TAG)))
+        //***Get interaction hand
+       Item changeItem; //Item to change to
+        if (!isPossesable(itemStack) || !state.getValue(FULL)) {
+            //Item cannot be possesed Pass interactions result
+            return hand == InteractionHand.MAIN_HAND && isPossesable(player.getItemInHand(InteractionHand.OFF_HAND)) && state.getValue(FULL)
+                    ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION
+                    : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        //This is gross. Need to research how to make this a "crafting recipe"
+        if (itemStack.is(ModItems.WEEPING_URN.get())) //****WEEPING URN
         {
-            //***Get interaction hand
-            if(mainHandItem.is(ModTags.Items.CAN_POSSES_TAG)) {
-                stackItem = mainHandItem.getItem();
-                stack = mainHandItem;
-                hand = InteractionHand.MAIN_HAND;
-            } else {
-                stackItem = offhandItem.getItem();
-                stack = offhandItem;
-                hand = InteractionHand.OFF_HAND;
-            }
-            Item changeItem; //Item to change to
+            changeItem = ModItems.WEEPING_URN_FULL.get();
+            swapItem(player, hand, itemStack, changeItem);
 
-            //Pick the item output
-            if (stackItem == ModItems.WEEPING_URN.get()) //****WEEPING URN
-            {
-                changeItem = ModItems.WEEPING_URN_FULL.get();
-                swapItem(player, hand, stack, changeItem);
-
-            } else if (stackItem == Items.TORCH) { //****TORCH
-                changeItem = Items.SOUL_TORCH;
-                swapItem(player, hand, stack, changeItem);
-
-            }
-            else if (stackItem == Items.CAMPFIRE) //****CAMPFIRE
-            {
-                changeItem = Items.SOUL_CAMPFIRE;
-                swapItem(player, hand, stack, changeItem);
-
-            } else if (stackItem == Items.LANTERN) { //****LANTERN
-                changeItem = Items.SOUL_LANTERN;
-                swapItem(player, hand, stack, changeItem);
-
-            }
-            else if (stackItem == Items.GLASS_BOTTLE) { //****GLASS BOTTLE
-                changeItem = Items.EXPERIENCE_BOTTLE;
-                swapItem(player, hand, stack, changeItem);
-            }
-            else if (stackItem == Items.SAND) {
-                changeItem = Items.SOUL_SAND;
-                swapItem(player, hand, stack, changeItem);
-            }
-            else if (stackItem == Items.RED_SAND) {
-                changeItem = Items.SOUL_SOIL;
-                swapItem(player, hand, stack, changeItem);
-
-            }
-
-
-            success = true;
-            level.setBlock(pos, state.setValue(FULL, false), 3);
+        } else if (itemStack.is(Items.TORCH)) { //****TORCH
+            changeItem = Items.SOUL_TORCH;
+            swapItem(player, hand, itemStack, changeItem);
         }
-        else {
-            return  InteractionResult.PASS;
-        }
-
-        //**UPDATE STATS
-        if(!level.isClientSide() && success)
+        else if (itemStack.is(Items.CAMPFIRE)) //****CAMPFIRE
         {
-            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+            changeItem = Items.SOUL_CAMPFIRE;
+            swapItem(player, hand, itemStack, changeItem);
+        } else if (itemStack.is( Items.LANTERN)) { //****LANTERN
+            changeItem = Items.SOUL_LANTERN;
+            swapItem(player, hand, itemStack, changeItem);
+        }
+        else if (itemStack.is(Items.GLASS_BOTTLE)) { //****GLASS BOTTLE
+            changeItem = Items.EXPERIENCE_BOTTLE;
+            swapItem(player, hand, itemStack, changeItem);
+        }
+        else if (itemStack.is(Items.SAND)) {
+            changeItem = Items.SOUL_SAND;
+            swapItem(player, hand, itemStack, changeItem);
+        }
+        else if (itemStack.is(Items.RED_SAND)) {
+            changeItem = Items.SOUL_SOIL;
+            swapItem(player, hand, itemStack, changeItem);
         }
 
-        return InteractionResult.CONSUME;
-
+        level.setBlock(pos, state.setValue(FULL, false), 3);
+        return  ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     /**

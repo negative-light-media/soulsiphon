@@ -3,14 +3,12 @@
     "minVersion": "0.8",
     "package": "com.negativelight.soulsiphon.mixin",
     "refmap": "${mod_id}.refmap.json",
-    "compatibilityLevel": "JAVA_17",
-    "mixins": [
-    ],
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [],
     "client": [
         "MixinTitleScreen"
     ],
-    "server": [
-    ],
+    "server": [],
     "injectors": {
       "defaultRequire": 1
     }
