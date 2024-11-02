@@ -143,27 +143,25 @@ public class SoulSiphon extends Block implements Fallable {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource source) {
        float x = source.nextFloat();
-        if(x <= MAX_TRANSFER_THRESH || x >= MIN_TRANSFER_THRESH)
-        {
-
-            if(canDrip(level, pos)) {
-                    BlockPos targetPos = pos.above(2);
-                    BlockState targetState = level.getBlockState(targetPos);
-
-                if (Blocks.SOUL_SAND.equals(targetState.getBlock())) {
-                    changeBlock(level, pos, targetPos, targetState, Blocks.SAND.defaultBlockState());
-                    possesBlock(level, pos);
-                }
-                else if (Blocks.SOUL_SOIL.equals(targetState.getBlock())) {
-                    changeBlock(level, pos, targetPos, targetState, Blocks.RED_SAND.defaultBlockState());
-                    possesBlock(level, pos);
-                }
-
-            }
-
-
+        if (! (x <= MAX_TRANSFER_THRESH) && ! (x >= MIN_TRANSFER_THRESH)) {
+            return;
         }
 
+        if (! canDrip(level, pos)) {
+            return;
+        }
+
+        BlockPos targetPos = pos.above(2);
+        BlockState targetState = level.getBlockState(targetPos);
+
+        if (Blocks.SOUL_SAND.equals(targetState.getBlock())) {
+            changeBlock(level, pos, targetPos, targetState, Blocks.SAND.defaultBlockState());
+            possesBlock(level, pos);
+        }
+        else if (Blocks.SOUL_SOIL.equals(targetState.getBlock())) {
+            changeBlock(level, pos, targetPos, targetState, Blocks.RED_SAND.defaultBlockState());
+            possesBlock(level, pos);
+        }
     }
 
     /**
@@ -179,6 +177,7 @@ public class SoulSiphon extends Block implements Fallable {
         {
             return;
         }
+
         BlockState targetState = level.getBlockState(targetPos); //***Get the target state
 
         //***If the block is sand make it soul sand
@@ -188,26 +187,25 @@ public class SoulSiphon extends Block implements Fallable {
         //***If the block is RED Stand make it soul soil
         else if (targetState.is(Blocks.RED_SAND)) {
             changeBlock(level, pos, targetPos, targetState, Blocks.SOUL_SOIL.defaultBlockState());
-
         }
         //****IF the block is a sculk cauldron fill it
         else if (targetState.is(ModBlocks.SCULK_CAULDRON.get())) {
-            if(!targetState.getValue(SculkCauldronBlock.FULL)) {
-
-                targetState.setValue(SculkCauldronBlock.FULL, Boolean.TRUE);
-
-                level.setBlock(targetPos, targetState.setValue(SculkCauldronBlock.FULL, true), 3);
-
+            if (targetState.getValue(SculkCauldronBlock.FULL)) {
+                return;
             }
+
+            targetState.setValue(SculkCauldronBlock.FULL, Boolean.TRUE);
+            level.setBlock(targetPos, targetState.setValue(SculkCauldronBlock.FULL, true), 3);
 
         }
         //***If the block is a sculk catalyst trigger its spawning
         else if (targetState.is(Blocks.SCULK_CATALYST)) {
             SculkCatalystBlockEntity catalystBlockEntity = (SculkCatalystBlockEntity) level.getBlockEntity(targetPos);
             SculkSpreader spreader = catalystBlockEntity.getListener().getSculkSpreader();
-            spreader.addCursors(new BlockPos(targetPos.offset(0, 1, 0)), 10);
+            spreader.addCursors(new BlockPos(targetPos.offset(0, -1, 0)), 100);
             //SculkCatalystBlock.bloom(level, targetPos, targetState, level.getRandom());
             level.setBlock(targetPos, targetState.setValue(SculkCatalystBlock.PULSE, Boolean.valueOf(true)), 3);
+            level.scheduleTick(targetPos,targetState.getBlock(),32);
         }
 
 
@@ -375,7 +373,12 @@ public class SoulSiphon extends Block implements Fallable {
      * @return Soul Vessel block
      */
     private static BlockPos findSoulVessel(Level level, BlockPos pos) {
-        Predicate<BlockState> predicate = (blockState) -> blockState.is(ModBlocks.SCULK_CAULDRON.get());
+        Predicate<BlockState> predicate = (blockState) -> (
+                blockState.is(ModBlocks.SCULK_CAULDRON.get()) ||
+                blockState.is(Blocks.SAND) ||
+                blockState.is(Blocks.RED_SAND) ||
+                blockState.is(Blocks.SCULK_CATALYST)
+        );
 
         BiPredicate<BlockPos, BlockState> biPredicate = (pos1, blockState) -> canDripThrough(level, pos1, blockState);
 
