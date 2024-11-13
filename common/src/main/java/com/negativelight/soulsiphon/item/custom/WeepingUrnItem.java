@@ -55,6 +55,9 @@ public class WeepingUrnItem extends Item {
             Villager villager = z.convertTo(EntityType.VILLAGER, false);
            villager.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NITWIT,1));
            villager.setBaby(z.isBaby());
+           pPlayer.addItem(new ItemStack(ModItems.WEEPING_URN.get(), 1));
+           pStack.consume(1, pPlayer);
+           return InteractionResult.SUCCESS;
         }
 
 
