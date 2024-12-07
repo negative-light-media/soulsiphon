@@ -24,7 +24,7 @@ public class StoneworkPath  extends DirtPathBlock {
 
     }
 
-    @Override
+
     public BlockState updateShape(BlockState $$0, Direction $$1, BlockState $$2, LevelAccessor $$3, BlockPos $$4, BlockPos $$5) {
         return $$0;
     }

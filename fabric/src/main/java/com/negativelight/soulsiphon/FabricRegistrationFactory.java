@@ -36,10 +36,12 @@ public class FabricRegistrationFactory implements RegistrationProvider.Factory {
             this.modId = modId;
 
             final var reg = BuiltInRegistries.REGISTRY.get(key.location());
-            if (reg == null) {
+            if (reg.isEmpty()) {
                 throw new RuntimeException("Registry with name " + key.location() + " was not found!");
             }
-            registry = (Registry<T>) reg;
+
+
+            registry = (Registry<T>) reg.get();
         }
 
         private Provider(String modId, Registry<T> registry) {
@@ -47,10 +49,14 @@ public class FabricRegistrationFactory implements RegistrationProvider.Factory {
             this.registry = registry;
         }
 
+
+
         @Override
         @SuppressWarnings("unchecked")
         public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
             final var rl = ResourceLocation.fromNamespaceAndPath(modId, name);
+
+
             final var obj = Registry.register(registry, rl, supplier.get());
 
             final var ro = new RegistryObject<I>() {
@@ -74,7 +80,7 @@ public class FabricRegistrationFactory implements RegistrationProvider.Factory {
                 @Override
                 public Holder<I> asHolder() {
                     Constants.LOG.info("Registry Object as Holder for " + this.key);
-                    Optional<Holder.Reference<T>> holderReference = registry.getHolder((ResourceKey<T>) this.key);
+                    Optional<Holder.Reference<T>> holderReference = registry.get((ResourceKey<T>) this.key);
                     if (holderReference.isPresent())
                     {
                         Constants.LOG.info("Holder Reference is Present");

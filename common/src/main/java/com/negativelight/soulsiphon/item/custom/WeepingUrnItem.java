@@ -6,11 +6,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerType;
@@ -52,9 +52,14 @@ public class WeepingUrnItem extends Item {
 
         if (pInteractionTarget instanceof Zombie z) {
             Constants.LOG.info("This is a zombie");
-            Villager villager = z.convertTo(EntityType.VILLAGER, false);
-           villager.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NITWIT,1));
-           villager.setBaby(z.isBaby());
+            z.convertTo(EntityType.VILLAGER,
+                    ConversionParams.single(z, false, false),
+                    (afterParams) -> {
+                       afterParams.setBaby(z.isBaby());
+                       afterParams.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NITWIT, 1));
+                    }
+            );
+
            pPlayer.addItem(new ItemStack(ModItems.WEEPING_URN.get(), 1));
            pStack.consume(1, pPlayer);
            return InteractionResult.SUCCESS;

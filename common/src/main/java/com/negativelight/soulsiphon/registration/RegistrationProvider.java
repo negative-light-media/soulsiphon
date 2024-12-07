@@ -62,6 +62,7 @@ public interface RegistrationProvider<T> {
      */
     <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier);
 
+
     /**
      * Gets all the objects currently registered.
      *

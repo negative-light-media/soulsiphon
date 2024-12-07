@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.SculkCatalystBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 
 public class SoulSiphon extends Block implements Fallable {
 
-    public static final DirectionProperty TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
+    public static final EnumProperty<Direction> TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
 
     private static final float DAMAGE_PER_FALL_DISTANCE = 2.0F;
 
@@ -57,6 +57,7 @@ public class SoulSiphon extends Block implements Fallable {
 
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float v) {
+
         if(state.getValue(TIP_DIRECTION) == Direction.UP)
         {
             entity.causeFallDamage(v + DAMAGE_PER_FALL_DISTANCE, DAMAGE_PER_FALL_DISTANCE, level.damageSources().stalagmite());
@@ -284,7 +285,7 @@ public class SoulSiphon extends Block implements Fallable {
         return direction1;
     }
 
-    @Override
+
     public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {
         return Shapes.empty();
     }
@@ -336,7 +337,7 @@ public class SoulSiphon extends Block implements Fallable {
         stateBuilder.add(TIP_DIRECTION);
     }
 
-    @Override
+
     public BlockState updateShape(BlockState blockState, Direction direction, BlockState state, LevelAccessor levelAccessor, BlockPos pos, BlockPos pos1) {
         if (direction != Direction.UP && direction != Direction.DOWN)
         {
@@ -363,7 +364,9 @@ public class SoulSiphon extends Block implements Fallable {
 
             }
         }
-        return super.updateShape(blockState, direction, state, levelAccessor, pos, pos1);
+        //return super.updateShape(blockState, direction, state, levelAccessor, pos, pos1);
+        //@TODO: Simplify this function
+        return blockState;
     }
 
     /**
@@ -388,7 +391,7 @@ public class SoulSiphon extends Block implements Fallable {
     private static boolean canDripThrough(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
         if (blockState.isAir()) {
             return true;
-        } else if (blockState.isSolidRender(blockGetter, blockPos)) {
+        } else if (blockState.isSolidRender()) {
             return false;
         } else if (!blockState.getFluidState().isEmpty()) {
             return false;
