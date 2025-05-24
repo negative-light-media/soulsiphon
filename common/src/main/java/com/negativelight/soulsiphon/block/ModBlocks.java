@@ -35,29 +35,25 @@ public class ModBlocks {
     );
 
 
-    public static  final RegistryObject<Block> SOUL_SIPHON = registerBlock(
+    public static final RegistryObject<Block> SOUL_SIPHON = registerBlock(
             "soul_siphon", SoulSiphon::new,
 
-                    BlockBehaviour.Properties.of()
-                            .noOcclusion()
-                            .randomTicks()
-                            .requiredFeatures()
-                            .pushReaction(PushReaction.DESTROY)
+            BlockBehaviour.Properties.of()
+                    .noOcclusion()
+                    .randomTicks()
+                    .requiredFeatures()
+                    .pushReaction(PushReaction.DESTROY)
     );
-
-
-
 
 
     //****************** UTILITY FUNCTIONS
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> blockSupplier) {
         Constants.LOG.info("REGISTERING BLOCK AND ITEM " + name);
         RegistryObject<T> retVal = BLOCKS.register(name, blockSupplier);
-        if (retVal == null)
-        {
+        if (retVal == null) {
             Constants.LOG.error("Registry Object is NULL");
         }
-        ITEMS.register(name, ()-> {
+        ITEMS.register(name, () -> {
             assert retVal != null;
             return new BlockItem(retVal.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, retVal.getId())));
         });
@@ -67,8 +63,9 @@ public class ModBlocks {
 
     public static <T extends Block> RegistryObject registerBlock(String name, Function<BlockBehaviour.Properties, Block> constructor, BlockBehaviour.Properties properties) {
         Block block = (Block) constructor.apply(properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MOD_ID, name))));
-        return registerBlock(name, ()-> block);
+        return registerBlock(name, () -> block);
     }
 
-    public static void loadClass() {}
+    public static void loadClass() {
+    }
 }

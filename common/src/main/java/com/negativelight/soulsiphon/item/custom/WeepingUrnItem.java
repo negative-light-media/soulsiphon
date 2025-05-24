@@ -2,6 +2,7 @@ package com.negativelight.soulsiphon.item.custom;
 
 import com.negativelight.soulsiphon.Constants;
 import com.negativelight.soulsiphon.item.ModItems;
+import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,7 +38,7 @@ public class WeepingUrnItem extends Item {
         if (pInteractionTarget instanceof WitherBoss) {
             pInteractionTarget.addEffect(
                     new MobEffectInstance(
-                            MobEffects.HEAL,
+                            MobEffects.INSTANT_HEALTH,
                             1,
                             5,
                             true,
@@ -56,7 +57,8 @@ public class WeepingUrnItem extends Item {
                     ConversionParams.single(z, false, false),
                     (afterParams) -> {
                        afterParams.setBaby(z.isBaby());
-                       afterParams.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NITWIT, 1));
+                       afterParams.setVillagerData(new VillagerData((Holder<VillagerType>) VillagerType.PLAINS, (Holder<VillagerProfession>) VillagerProfession.NITWIT, 1));
+
                     }
             );
 
