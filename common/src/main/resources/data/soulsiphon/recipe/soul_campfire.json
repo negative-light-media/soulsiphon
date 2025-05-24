@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "soulsiphon:weeping_urn_full"
-    },
-    {
-      "item": "minecraft:campfire"
-    }
+    "soulsiphon:weeping_urn_full",
+    "minecraft:campfire"
   ],
   "result": {
     "id": "minecraft:soul_campfire"

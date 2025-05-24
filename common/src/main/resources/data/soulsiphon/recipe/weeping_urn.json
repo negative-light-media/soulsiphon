@@ -5,16 +5,10 @@
     " C "
   ],
   "key": {
-    "C": {
-      "item": "minecraft:crying_obsidian"
-    },
+    "C": "minecraft:crying_obsidian",
     "S": [
-      {
-        "item": "minecraft:red_sand"
-      },
-      {
-        "item":"minecraft:sand"
-      }
+      "minecraft:red_sand",
+      "minecraft:sand"
     ]
   },
   "result": {

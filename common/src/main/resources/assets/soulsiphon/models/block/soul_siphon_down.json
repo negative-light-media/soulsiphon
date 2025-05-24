@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/pointed_dripstone",
   "textures": {
     "cross": "soulsiphon:block/soul_siphon_down"
   },

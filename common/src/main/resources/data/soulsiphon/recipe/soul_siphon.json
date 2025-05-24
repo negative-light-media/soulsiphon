@@ -6,17 +6,12 @@
     " S "
   ],
   "key": {
-    "O": {
-      "item": "minecraft:crying_obsidian"
-    },
-    "D": {
-      "item": "minecraft:pointed_dripstone"
-    },
-    "S": {
-      "item": "minecraft:sculk"
-    }
+    "O": "minecraft:crying_obsidian",
+    "D": "minecraft:pointed_dripstone",
+    "S": "minecraft:sculk"
   },
   "result": {
-    "id": "soulsiphon:soul_siphon"
+    "id": "soulsiphon:soul_siphon",
+    "count": 1
   }
 }

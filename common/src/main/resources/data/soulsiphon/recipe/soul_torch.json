@@ -1,14 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "soulsiphon:weeping_urn_full"
-    },
-    {
-      "item": "minecraft:torch"
-    }
+   "soulsiphon:weeping_urn_full"
+    ,
+     "minecraft:torch"
+
   ],
   "result": {
-    "id": "minecraft:soul_torch"
+    "id": "minecraft:soul_torch",
+    "count": 1
   }
 }
