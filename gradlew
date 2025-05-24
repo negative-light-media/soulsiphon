@@ -82,8 +82,7 @@ do
     esac
 done
 
-APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s
-' "$PWD" ) || exit
+APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s\n' "$PWD" ) || exit
 
 APP_NAME="Gradle"
 APP_BASE_NAME=${0##*/}

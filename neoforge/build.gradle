@@ -24,7 +24,7 @@ neoForge {
             client()
         }
         data {
-            data()
+            clientData()
         }
         server {
             server()
