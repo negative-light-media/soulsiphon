@@ -3,7 +3,6 @@ package com.negativelight.soulsiphon.block;
 import com.negativelight.soulsiphon.Constants;
 import com.negativelight.soulsiphon.block.custom.SculkCauldronBlock;
 import com.negativelight.soulsiphon.block.custom.SoulSiphon;
-import com.negativelight.soulsiphon.block.custom.StoneworkPath;
 import com.negativelight.soulsiphon.registration.RegistryObject;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
