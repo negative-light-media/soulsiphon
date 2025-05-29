@@ -82,8 +82,7 @@ do
     esac
 done
 
-APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s
-' "$PWD" ) || exit
+APP_HOME=$( cd -P "${APP_HOME:-./}" > /dev/null && printf '%s\n' "$PWD" ) || exit
 
 APP_NAME="Gradle"
 APP_BASE_NAME=${0##*/}
@@ -139,9 +138,9 @@ else
     if ! command -v java >/dev/null 2>&1
      then
          die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
-
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
+              Please set the JAVA_HOME variable in your environment to match the
+              location of your Java installation."
+    fi
 fi
 
 # Increase the maximum file descriptors if we can.
@@ -244,3 +243,4 @@ eval "set -- $(
     )" '"$@"'
 
 exec "$JAVACMD" "$@"
+

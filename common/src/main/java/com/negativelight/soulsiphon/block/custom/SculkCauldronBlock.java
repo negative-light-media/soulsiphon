@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RespawnAnchorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -22,6 +21,7 @@ public class SculkCauldronBlock extends Block {
 
     /**
      * Constructor
+     *
      * @param properties Block properties
      */
     public SculkCauldronBlock(Properties properties) {
@@ -42,20 +42,21 @@ public class SculkCauldronBlock extends Block {
     }
 
     /**
-     *  Handle Interactions with user
-     *  - Converts Possible items into their possed form
-     *  Weeping Urn -> Full Weeping Urn
-     *  Torch -> Soul Torch
-     *  Campfire -> Soul Campfire
-     *  Lantern -> Soul Lantern
-     *  Glass Bottle -> Enchanted Bottle
+     * Handle Interactions with user
+     * - Converts Possible items into their possed form
+     * Weeping Urn -> Full Weeping Urn
+     * Torch -> Soul Torch
+     * Campfire -> Soul Campfire
+     * Lantern -> Soul Lantern
+     * Glass Bottle -> Enchanted Bottle
+     *
      * @param itemStack Inherited
-     * @param state Inherited
-     * @param level Inherited
-     * @param pos Inherited
-     * @param player Inherited
-     * @param hand Inherited
-     * @param result Inherited
+     * @param state     Inherited
+     * @param level     Inherited
+     * @param pos       Inherited
+     * @param player    Inherited
+     * @param hand      Inherited
+     * @param result    Inherited
      * @return CONSUME if interaction was successful
      */
 
@@ -64,14 +65,13 @@ public class SculkCauldronBlock extends Block {
 
         //IF the Cauldron is FULL and one of the items has a CAN_POSSES_TAG
         //***Get interaction hand
-       Item changeItem; //Item to change to
-        if (!isPossesable(itemStack) || !state.getValue(FULL)) {
+        Item changeItem; //Item to change to
+        if (! isPossesable(itemStack) || ! state.getValue(FULL)) {
             //Item cannot be possesed Pass interactions result
             return hand == InteractionHand.MAIN_HAND && isPossesable(player.getItemInHand(InteractionHand.OFF_HAND)) && state.getValue(FULL)
                     ? InteractionResult.PASS
                     : InteractionResult.TRY_WITH_EMPTY_HAND;
         }
-
 
 
         //This is gross. Need to research how to make this a "crafting recipe"
@@ -80,7 +80,8 @@ public class SculkCauldronBlock extends Block {
             changeItem = ModItems.WEEPING_URN_FULL.get();
             swapItem(player, hand, itemStack, changeItem);
 
-        } else if (itemStack.is(Items.TORCH)) { //****TORCH
+        }
+        else if (itemStack.is(Items.TORCH)) { //****TORCH
             changeItem = Items.SOUL_TORCH;
             swapItem(player, hand, itemStack, changeItem);
         }
@@ -88,7 +89,8 @@ public class SculkCauldronBlock extends Block {
         {
             changeItem = Items.SOUL_CAMPFIRE;
             swapItem(player, hand, itemStack, changeItem);
-        } else if (itemStack.is( Items.LANTERN)) { //****LANTERN
+        }
+        else if (itemStack.is(Items.LANTERN)) { //****LANTERN
             changeItem = Items.SOUL_LANTERN;
             swapItem(player, hand, itemStack, changeItem);
         }
@@ -106,24 +108,25 @@ public class SculkCauldronBlock extends Block {
         }
 
         level.setBlock(pos, state.setValue(FULL, false), 3);
-        return  InteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
 
     }
 
     /**
      * Swap players hand with a new item
-     * @param player - Player that will be effected
-     * @param hand - interaction hand that handle the event
-     * @param stack - stack originating items
+     *
+     * @param player     - Player that will be effected
+     * @param hand       - interaction hand that handle the event
+     * @param stack      - stack originating items
      * @param changeItem - Item to swap to
      */
     private void swapItem(Player player, InteractionHand hand, ItemStack stack, Item changeItem) {
         stack.shrink(1); //Reduce the items in the main stack
-        if(stack.isEmpty()) //Check if the original stack is empty
+        if (stack.isEmpty()) //Check if the original stack is empty
         {
             player.setItemInHand(hand, new ItemStack(changeItem));
         }
-        else if(!player.getInventory().add(new ItemStack(changeItem))) //Otherwise add item in player inventory
+        else if (! player.getInventory().add(new ItemStack(changeItem))) //Otherwise add item in player inventory
         {
             player.drop(new ItemStack(changeItem), false);
         }
@@ -131,6 +134,7 @@ public class SculkCauldronBlock extends Block {
 
     /**
      * Finalize the block state definition
+     *
      * @param stateBuilder - State builder to manage states
      */
     @Override

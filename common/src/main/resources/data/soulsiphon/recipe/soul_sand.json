@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "soulsiphon:weeping_urn_full"
-    },
-    {
-      "item": "minecraft:sand"
-    }
+    "soulsiphon:weeping_urn_full",
+    "minecraft:sand"
   ],
   "result": {
     "id": "minecraft:soul_sand"

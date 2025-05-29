@@ -6,12 +6,8 @@
     "OCO"
   ],
   "key": {
-    "O": {
-      "item": "minecraft:crying_obsidian"
-    },
-    "C": {
-      "item": "minecraft:sculk_catalyst"
-    }
+    "O": "minecraft:crying_obsidian",
+    "C": "minecraft:sculk_catalyst"
   },
   "result": {
     "id": "soulsiphon:sculk_cauldron"
